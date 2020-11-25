@@ -1,0 +1,21 @@
+{
+  "name": "orm-performance",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get your application up and running.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/Vsladjan/orm-performance.git"
+  },
+  "author": "Sladjan",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/Vsladjan/orm-performance#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5"
+  }
+}
