@@ -1,21 +1,14 @@
-
 var express = require("express");
 const { sequelize, Club, Player, Equipment, PlayerEquipment } = require("../sequelize.js");
 
 
-var getSelect = async function(req, res){
+
+var getSelectWithJoin = async function(req, res){
     await sequelize.sync();
-    let jsonObj = {};
-    let jsonStr;
-    let start, elapsed, msec, sec;
+    let jsonStr, jsonObj = {};
+    let start, elapsed, sec;
 
-    start = process.hrtime();
-    await Club.findAll();
-    elapsed = process.hrtime(start);
-    msec = elapsed[1] / 1000000000;
-    sec = elapsed[0] + msec;
-    jsonObj.ClubTime = sec + "s";
-
+    /* Player basic select */
     start = process.hrtime();
     await Player.findAll({
         include: [{
@@ -24,22 +17,63 @@ var getSelect = async function(req, res){
         }]
     });
     elapsed = process.hrtime(start);
-    msec = elapsed[1] / 1000000000;
-    sec = elapsed[0] + msec;
+    sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerTime = sec + "s";
 
+
     start = process.hrtime();
-    await Equipment.findAll();
+    let data = await PlayerEquipment.findAll({include: [{ model: Player }, {model: Equipment }]});
+    console.log(data);
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;
-    jsonObj.EquipmentTime = sec + "s";
-    
-    console.log("Sequelize Club select time: " + jsonObj.ClubTime);
-    console.log("Sequelize Player select time: " + jsonObj.ClubTime);
-    console.log("Sequelize Equipment select time: " + jsonObj.EquipmentTime);
+    jsonObj.PlayerEquipmentTime = sec + "s";
+
+    console.log("Sequelize Player select time: " + jsonObj.PlayerTime);
+    console.log("Sequelize Player and Equipment select time: " + jsonObj.PlayerEquipmentTime);
     jsonStr = JSON.stringify(jsonObj);
     res.send(jsonStr);
+}
+
+var getSelect = async function(req, res){
+    await sequelize.sync();
+    let jsonObj = {};
+    let jsonStr;
+    let start, elapsed, sec;
+
+    /* Club basic select */
+    start = process.hrtime();
+    await Club.findAll();
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.ClubTime = sec + "s";
+
+    /* Player basic select */
+    start = process.hrtime();
+    await Player.findAll();
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerTime = sec + "s";
+
+    /* Equipment basic select */
+    start = process.hrtime();
+    await Equipment.findAll();
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.EquipmentTime = sec + "s";
+
+    
+    /* Response */
+    console.log("Sequelize Club select time: " + jsonObj.ClubTime);
+    console.log("Sequelize Player select time: " + jsonObj.PlayerTime);
+    console.log("Sequelize Equipment select time: " + jsonObj.EquipmentTime);
+    //console.log("Sequelize PlayerEquipment select time: " + jsonObj.PlayerEquipmentTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
+}
+
+var getSelectColumn = function(){
+
 }
 
 var getInsert = async function(req, res){
@@ -50,32 +84,42 @@ var getInsert = async function(req, res){
         console.error('Unable to connect to the database:', error);
     }
 
-    await sequelize.sync();
+    let start = process.hrtime();
     await sequelize.sync({ force: true});
-    for(i=1; i<64; i++){
+    for(i=1; i<=100; i++){
         await Club.create({
             name: 'name' + i,
             location: 'location' + i,
             created: 1900 + i
         });
-        await Player.create({
-            name: 'name' + i,
-            lastname: 'lastname' + i,
-            age: 20,
-            clubId: 1
-        });
-        await Equipment.create({
-            name: 'name' + i,
-            description: 'description' + i,
-            color: 'color' + i,
-        });
-        await PlayerEquipment.create({
-            playerId: i,
-            equipmentId: i
-        });
+        for(j=1; j<=10; j++){
+            await Player.create({
+                name: 'name ' + i + " " + j,
+                lastname: 'lastname ' + i + " " + j,
+                age: 20,
+                clubId: i
+            });
+            await Equipment.create({
+                name: 'name ' + i + " " + j,
+                description: 'description ' + i+ " " + j,
+                color: 'color ' + i + " " + j,
+            });
+        }
+        for (j=1; j<10; j++){
+            await PlayerEquipment.create({
+                playerId: (i-1)*10 + j,
+                equipmentId: i*10 - j
+            });
+        }
     }
+    elapsed = process.hrtime(start);
+    msec = elapsed[1] / 1000000000;
+    sec = elapsed[0] + msec;
+    console.log("Data creation completed, time elapsed: " + sec);
+    res.send("Data creation completed, time: " + sec);
 }
 
 
 module.exports.getSelect = getSelect;
+module.exports.getSelectWithJoin = getSelectWithJoin;
 module.exports.getInsert = getInsert;
