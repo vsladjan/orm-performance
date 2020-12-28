@@ -37,9 +37,32 @@ var getSelect = async function(req, res){
 }
 
 var getSelectWithJoin = async function(req, res){
-    knex("player").then(function(data){
-        res.send(data);
-    });
+    let jsonObj = {};
+    let jsonStr, data;
+    let start, elapsed, sec;
+    console.log("poz");
+
+    // Select player with club
+    start = process.hrtime();
+    data = await knex("player").join("club", "player.clubId", "club.id");
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerClubTime = sec + "s";
+    console.log('zz');
+
+    // Select player with club
+    start = process.hrtime();
+    data = await knex("player").join('playerequipment', 'player.id', 'playerequipment.playerId')
+                                .join('equipment', 'playerequipment.equipmentId', 'equipment.id');
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerEquipmentTime = sec + "s";
+
+    // Response
+    console.log("Knex Player and Club select time: " + jsonObj.PlayerClubTime);
+    console.log("Knex Player and Equipment select time: " + jsonObj.PlayerEquipmentTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
 }
 
 var getSelectColumn = async function(req, res){
