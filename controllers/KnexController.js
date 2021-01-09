@@ -40,7 +40,6 @@ var getSelectWithJoin = async function(req, res){
     let jsonObj = {};
     let jsonStr, data;
     let start, elapsed, sec;
-    console.log("poz");
 
     // Select player with club
     start = process.hrtime();
@@ -48,9 +47,8 @@ var getSelectWithJoin = async function(req, res){
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerClubTime = sec + "s";
-    console.log('zz');
 
-    // Select player with club
+    // Select player with equipment
     start = process.hrtime();
     data = await knex("player").join('playerequipment', 'player.id', 'playerequipment.playerId')
                                 .join('equipment', 'playerequipment.equipmentId', 'equipment.id');
@@ -66,12 +64,73 @@ var getSelectWithJoin = async function(req, res){
 }
 
 var getSelectColumn = async function(req, res){
-    knex("player").then(function(data){
-        res.send(data);
-    });
+    let jsonObj = {};
+    let jsonStr, data;
+    let start, elapsed, sec;
+
+
+    // Player select join with equipment
+    start = process.hrtime();
+    data = await knex("player").join('playerequipment', 'player.id', 'playerequipment.playerId')
+                                .join('equipment', 'playerequipment.equipmentId', 'equipment.id')
+                                .select(
+                                        knex.ref("player.id").as('playerId'),
+                                        knex.ref("player.name").as('playerName'),
+                                        knex.ref("equipment.name").as('equipmentName')
+                                );
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerEquipmentColumnTime = sec + "s";
+
+    // Response
+    console.log("Knex Player and Equipment select specific column time: " + jsonObj.PlayerEquipmentColumnTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
+}
+
+var getSelectWhere = async function(req, res){
+    let paramId = req.params.id;
+    let jsonObj = {};
+    let jsonStr, data;
+    let start, elapsed, sec;
+
+
+    // Player select join with equipment
+    start = process.hrtime();
+    data = await knex("player").join('playerequipment', 'player.id', 'playerequipment.playerId')
+                                .join('equipment', 'playerequipment.equipmentId', 'equipment.id')
+                                .where('player.id', paramId);
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+
+    // Response
+    console.log("Knex Player and Equipment select where time: " + jsonObj.PlayerEquipmentWhereTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
+}
+
+var getProcedure = async function(req, res){
+    let jsonStr, jsonObj = {};
+    let start, elapsed, sec;
+
+    // Player select join with equipment
+    start = process.hrtime();
+    let data = await knex.raw("call proc(1);");
+    elapsed = process.hrtime(start);
+    msec = elapsed[1] / 1000000000;
+    sec = elapsed[0] + msec;
+    jsonObj.ProcedureTime = sec + "s";
+
+
+    console.log("Knex procedure" + jsonObj.ProcedureTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
 }
 
 
 module.exports.getSelect = getSelect;
 module.exports.getSelectWithJoin = getSelectWithJoin;
 module.exports.getSelectColumn = getSelectColumn;
+module.exports.getSelectWhere = getSelectWhere;
+module.exports.getProcedure = getProcedure;

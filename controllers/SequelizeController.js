@@ -2,6 +2,42 @@ var express = require("express");
 const { sequelize, Club, Player, Equipment, PlayerEquipment } = require("../sequelize.js");
 
 
+var getSelect = async function(req, res){
+    await sequelize.sync();
+    let jsonObj = {};
+    let jsonStr;
+    let start, elapsed, sec;
+
+    // Club basic select 
+    start = process.hrtime();
+    await Club.findAll();
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.ClubTime = sec + "s";
+
+    // Player basic select
+    start = process.hrtime();
+    await Player.findAll();
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerTime = sec + "s";
+
+    // Equipment basic select
+    start = process.hrtime();
+    await Equipment.findAll();
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.EquipmentTime = sec + "s";
+
+    
+    /* Response */
+    console.log("Sequelize Club select time: " + jsonObj.ClubTime);
+    console.log("Sequelize Player select time: " + jsonObj.PlayerTime);
+    console.log("Sequelize Equipment select time: " + jsonObj.EquipmentTime);
+    //console.log("Sequelize PlayerEquipment select time: " + jsonObj.PlayerEquipmentTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
+}
 
 var getSelectWithJoin = async function(req, res){
     await sequelize.sync();
@@ -22,7 +58,7 @@ var getSelectWithJoin = async function(req, res){
 
     // Club basic select 
     start = process.hrtime();
-    let data = await sequelize.query("SELECT * FROM player as p INNER JOIN club as c;", { type: sequelize.QueryTypes.SELECT});
+    let data = await sequelize.query("SELECT * FROM player as p INNER JOIN club as c on p.clubId=c.id;", { type: sequelize.QueryTypes.SELECT});
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerClubTimeRaw = sec + "s";
@@ -49,45 +85,73 @@ var getSelectWithJoin = async function(req, res){
     res.send(jsonStr);
 }
 
-var getSelect = async function(req, res){
+var getSelectColumn = async function(req, res){
     await sequelize.sync();
-    let jsonObj = {};
-    let jsonStr;
+    let jsonStr, jsonObj = {};
     let start, elapsed, sec;
 
-    /* Club basic select */
+    // Player select join with equipment
     start = process.hrtime();
-    await Club.findAll();
+    let data = await Player.findAll({
+                            include: [{ model: Equipment }], 
+                            attributes: [
+                                [sequelize.col('player.id'), 'playerId'],
+                                [sequelize.col('player.name'), 'playerName'],
+                                [sequelize.col('equipment.name'), 'equipmentName']
+                            ]
+                        });
     elapsed = process.hrtime(start);
-    sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.ClubTime = sec + "s";
+    msec = elapsed[1] / 1000000000;
+    sec = elapsed[0] + msec;
+    jsonObj.PlayerEquipmentColumnTime = sec + "s";
 
-    /* Player basic select */
-    start = process.hrtime();
-    await Player.findAll();
-    elapsed = process.hrtime(start);
-    sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerTime = sec + "s";
 
-    /* Equipment basic select */
-    start = process.hrtime();
-    await Equipment.findAll();
-    elapsed = process.hrtime(start);
-    sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.EquipmentTime = sec + "s";
-
-    
-    /* Response */
-    console.log("Sequelize Club select time: " + jsonObj.ClubTime);
-    console.log("Sequelize Player select time: " + jsonObj.PlayerTime);
-    console.log("Sequelize Equipment select time: " + jsonObj.EquipmentTime);
-    //console.log("Sequelize PlayerEquipment select time: " + jsonObj.PlayerEquipmentTime);
+    console.log("Sequelize Player and Equipment select specific columns time: " + jsonObj.PlayerEquipmentColumnTime);
     jsonStr = JSON.stringify(jsonObj);
     res.send(jsonStr);
 }
 
-var getSelectColumn = function(){
+var getSelectWhere = async function(req, res){
+    let paramId = req.params.id;
+    await sequelize.sync();
+    let jsonStr, jsonObj = {};
+    let start, elapsed, sec;
 
+    // Player select join with equipment
+    start = process.hrtime();
+    let data = await Player.findAll({
+                            include: [{ model: Equipment }], 
+                            where: {
+                                id: paramId
+                            }
+                        });
+    elapsed = process.hrtime(start);
+    msec = elapsed[1] / 1000000000;
+    sec = elapsed[0] + msec;
+    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+
+
+    console.log("Sequelize Player and Equipment select where time: " + jsonObj.PlayerEquipmentWhereTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
+}
+
+var getProcedure = async function(req, res){
+    await sequelize.sync();
+    let jsonStr, jsonObj = {};
+    let start, elapsed, sec;
+
+    // Player select join with equipment
+    start = process.hrtime();
+    let data = await sequelize.query("call proc(1);");
+    elapsed = process.hrtime(start);
+    msec = elapsed[1] / 1000000000;
+    sec = elapsed[0] + msec;
+    jsonObj.ProcedureTime = sec + "s";
+
+    console.log("Sequelize procedure" + jsonObj.ProcedureTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
 }
 
 var getInsert = async function(req, res){
@@ -136,4 +200,7 @@ var getInsert = async function(req, res){
 
 module.exports.getSelect = getSelect;
 module.exports.getSelectWithJoin = getSelectWithJoin;
+module.exports.getSelectColumn = getSelectColumn;
+module.exports.getSelectWhere = getSelectWhere;
+module.exports.getProcedure = getProcedure;
 module.exports.getInsert = getInsert;
