@@ -1,4 +1,6 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
+import { Entity, PrimaryKey, Property, ManyToMany, Collection } from '@mikro-orm/core'
+import { Player } from './Player';
+
 @Entity()
 
 export class Equipment {
@@ -14,4 +16,7 @@ export class Equipment {
     
     @Property({ length: 255, nullable: true })
     color?: string;
+
+    @ManyToMany(() => Player, player => player.equipments)
+    players = new Collection<Player>(this); // inverse side
 }

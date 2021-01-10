@@ -59,10 +59,19 @@ router.get("/mikroorm/selectWithJoin", function(req, res){
     MikroormController.getSelectWithJoin(req, res);
 });
 
-router.get("/mikroorm/getSelectColumn", function(req, res){
+router.get("/mikroorm/selectColumn", function(req, res){
     MikroormController.getSelectColumn(req, res);
 });
 
+router.get("/mikroorm/selectWhere/:id", function(req, res){
+    MikroormController.getSelectWhere(req, res);
+});
+
+router.get("/mikroorm/procedure", function(req, res){
+    MikroormController.getProcedure(req, res);
+});
+
+// Bookshelf
 router.get("/bookshelf/select", function(req, res){
     BookshelfController.getSelect(req, res);
 });

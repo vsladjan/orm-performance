@@ -11,7 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Equipment = void 0;
 const core_1 = require("@mikro-orm/core");
+const Player_1 = require("./Player");
 let Equipment = class Equipment {
+    constructor() {
+        this.players = new core_1.Collection(this); // inverse side
+    }
 };
 __decorate([
     core_1.PrimaryKey(),
@@ -29,6 +33,10 @@ __decorate([
     core_1.Property({ length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Equipment.prototype, "color", void 0);
+__decorate([
+    core_1.ManyToMany(() => Player_1.Player, player => player.equipments),
+    __metadata("design:type", Object)
+], Equipment.prototype, "players", void 0);
 Equipment = __decorate([
     core_1.Entity()
 ], Equipment);

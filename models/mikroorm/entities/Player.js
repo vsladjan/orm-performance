@@ -12,7 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
 const core_1 = require("@mikro-orm/core");
 const Club_1 = require("./Club");
+const Equipment_1 = require("./Equipment");
 let Player = class Player {
+    constructor() {
+        this.equipments = new core_1.Collection(this);
+    }
 };
 __decorate([
     core_1.PrimaryKey(),
@@ -34,6 +38,10 @@ __decorate([
     core_1.ManyToOne({ entity: () => Club_1.Club, fieldName: 'clubId', cascade: [core_1.Cascade.MERGE], nullable: true, index: 'clubId' }),
     __metadata("design:type", Club_1.Club)
 ], Player.prototype, "clubId", void 0);
+__decorate([
+    core_1.ManyToMany({ entity: () => Equipment_1.Equipment, pivotTable: 'PlayerEquipment', joinColumn: 'playerId', inverseJoinColumn: 'equipmentId' }),
+    __metadata("design:type", Object)
+], Player.prototype, "equipments", void 0);
 Player = __decorate([
     core_1.Entity()
 ], Player);

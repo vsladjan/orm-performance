@@ -1,5 +1,7 @@
-import { Cascade, Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Cascade, Entity, ManyToOne, PrimaryKey, Property, Collection, ManyToMany } from '@mikro-orm/core';
 import { Club } from './Club';
+import { Equipment } from './Equipment';
+import { Playerequipment } from './PlayerEquipment';
 
 @Entity()
 export class Player {
@@ -18,4 +20,7 @@ export class Player {
     
     @ManyToOne({ entity: () => Club, fieldName: 'clubId', cascade: [Cascade.MERGE], nullable: true, index: 'clubId' })
     clubId?: Club;
+
+    @ManyToMany({entity: () => Equipment, pivotTable: 'PlayerEquipment', joinColumn: 'playerId', inverseJoinColumn: 'equipmentId' })
+    equipments = new Collection<Equipment>(this);
 }

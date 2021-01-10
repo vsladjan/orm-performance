@@ -110,7 +110,7 @@ var getProcedure = async function(req, res){
     let jsonStr, jsonObj = {};
     let start, elapsed, sec;
 
-    // Player select join with equipment
+    // Procedure
     start = process.hrtime();
     const knex = Player.knex();
     let data = await knex.raw("call proc(1);");
