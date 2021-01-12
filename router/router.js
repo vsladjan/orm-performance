@@ -80,8 +80,16 @@ router.get("/bookshelf/selectWithJoin", function(req, res){
     BookshelfController.getSelectWithJoin(req, res);
 });
 
-router.get("/bookshelf/getSelectColumn", function(req, res){
+router.get("/bookshelf/selectColumn", function(req, res){
     BookshelfController.getSelectColumn(req, res);
+});
+
+router.get("/bookshelf/selectWhere/:id", function(req, res){
+    BookshelfController.getSelectWhere(req, res);
+});
+
+router.get("/bookshelf/procedure", function(req, res){
+    BookshelfController.getProcedure(req, res);
 });
 
 // Objection
