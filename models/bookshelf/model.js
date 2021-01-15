@@ -17,14 +17,14 @@ const Player = bookshelfDb.Model.extend({
         return this.belongsTo(Club, 'clubId', 'id');
     },
     equipments: function(){
-        return this.belongsToMany(Equipment);
+        return this.belongsToMany(Equipment, 'PlayerEquipment', 'playerId', 'equipmentId');
     }
 });
 
 const Equipment = bookshelfDb.Model.extend({
     tableName: 'equipment',
-    clubs: function(){
-        return this.belongsToMany(Player);
+    players: function(){
+        return this.belongsToMany(Player, 'PlayerEquipment', 'equipmentId', 'playerId');
     }
 });
 

@@ -51,7 +51,7 @@ var getSelectWithJoin = async function(req, res){
     jsonObj.PlayerClubTime = sec + "s";
 
     start = process.hrtime();
-    await Player.fetchAll({withRelated:['equipments']});
+    data = await Player.fetchAll({withRelated:['equipments']});
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerEquipmentTime = sec + "s";
@@ -68,7 +68,32 @@ var getSelectColumn = async function(req, res){
   
 }
 
+var getSelectWhere = async function(req, res){
+    let paramId = req.params.id;
+    let jsonObj = {};
+    let jsonStr, data;
+    let start, elapsed, sec;
+
+
+    start = process.hrtime();
+    data = await Player.where('player.id', paramId).fetchAll({withRelated:['equipments']});
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+
+     /* Response */
+    console.log("Bookshelf Player and Equipment where select time: " + jsonObj.PlayerEquipmentWhereTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
+}
+
+var getProcedure = async function(req, res){
+  
+}
+
 
 module.exports.getSelect = getSelect;
 module.exports.getSelectWithJoin = getSelectWithJoin;
 module.exports.getSelectColumn = getSelectColumn;
+module.exports.getSelectWhere = getSelectWhere;
+module.exports.getProcedure = getProcedure;
