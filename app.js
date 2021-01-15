@@ -4,6 +4,8 @@ var knexDb = require("./bookshelf.js").createConnection();
 var objectionDb = require("./objection.js").createConnection();
 var express = require('express');
 var router = require("./router/router.js");
+require ("reflect-metadata");
+const {createConnection} = require('typeorm');;
 var app = express();
 var port = 3000;
   
@@ -13,3 +15,4 @@ app.listen(port, function(){
 
 app.use("/orm", router);
 
+createConnection();

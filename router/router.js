@@ -5,6 +5,7 @@ var KnexController = require("../controllers/KnexController.js");
 var MikroormController = require("../controllers/MikroormController.js");
 var BookshelfController = require("../controllers/BookshelfController.js");
 var ObjectionController = require("../controllers/ObjectionController.js");
+var TypeormController = require("../controllers/TypeormController.js");
 
 
 // Sequelize
@@ -103,6 +104,27 @@ router.get("/objection/selectWhere/:id", function(req, res){
 
 router.get("/objection/procedure", function(req, res){
     ObjectionController.getProcedure(req, res);
+});
+
+// Typeorm
+router.get("/typeorm/select", function(req, res){
+    TypeormController.getSelect(req, res);
+});
+
+router.get("/typeorm/selectWithJoin", function(req, res){
+    TypeormController.getSelectWithJoin(req, res);
+});
+
+router.get("/typeorm/selectColumn", function(req, res){
+    TypeormController.getSelectColumn(req, res);
+});
+
+router.get("/typeorm/selectWhere/:id", function(req, res){
+    TypeormController.getSelectWhere(req, res);
+});
+
+router.get("/typeorm/procedure", function(req, res){
+    TypeormController.getProcedure(req, res);
 });
 
 router.get("/sequelize/insert", function(req, res){
