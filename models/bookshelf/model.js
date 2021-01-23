@@ -31,3 +31,4 @@ const Equipment = bookshelfDb.Model.extend({
 module.exports.Club = Club;
 module.exports.Player = Player;
 module.exports.Equipment = Equipment;
+module.exports.db = bookshelfDb;

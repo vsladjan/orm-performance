@@ -65,7 +65,28 @@ var getSelectWithJoin = async function(req, res){
 }
 
 var getSelectColumn = async function(req, res){
-  
+    let jsonObj = {};
+    let jsonStr, data;
+    let start, elapsed, sec;
+
+
+    start = process.hrtime();
+    data = await Player.fetchAll({columns: ['id', 'name'],
+        withRelated: [{
+            'equipments': function(qb) {
+                qb.select('name'); //Table1Id is omitted!
+            }
+        }]
+    });
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerEquipmentColumnTime = sec + "s";
+
+
+     /* Response */
+     console.log("Bookshelf Player and Equipment select specific column time: " + jsonObj.PlayerEquipmentColumnTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
 }
 
 var getSelectWhere = async function(req, res){
@@ -88,7 +109,24 @@ var getSelectWhere = async function(req, res){
 }
 
 var getProcedure = async function(req, res){
-  
+    let paramId = req.params.id;
+    let jsonObj = {};
+    let jsonStr, data;
+    let start, elapsed, sec;
+
+
+    start = process.hrtime();
+    let knex = dbBookshelf.db.knex;
+    data = await knex.raw("call proc(1);");
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+
+
+     /* Response */
+    console.log("Bookshelf Player and Equipment where select time: " + jsonObj.PlayerEquipmentWhereTime);
+    jsonStr = JSON.stringify(jsonObj);
+    res.send(jsonStr);
 }
 
 

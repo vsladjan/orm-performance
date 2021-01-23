@@ -25,6 +25,7 @@
     "objection": "^2.2.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.3.5",
-    "tsc": "^1.20150623.0"
+    "tsc": "^1.20150623.0",
+    "typeorm": "^0.2.29"
   }
 }
