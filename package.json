@@ -14,18 +14,18 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/Vsladjan/orm-performance#readme",
   "dependencies": {
-    "@mikro-orm/core": "^4.3.2",
-    "@mikro-orm/mariadb": "^4.3.2",
-    "@mikro-orm/mysql": "^4.3.2",
+    "@mikro-orm/core": "^5.1.1",
+    "@mikro-orm/mariadb": "^5.1.1",
+    "@mikro-orm/mysql": "^5.1.1",
     "bookshelf": "^1.2.0",
     "express": "^4.17.1",
-    "knex": "^0.21.12",
+    "knex": "^1.0.4",
     "mysql": "^2.18.1",
-    "mysql2": "^2.2.5",
-    "objection": "^2.2.3",
+    "mysql2": "^2.3.3",
+    "objection": "^3.0.1",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.3.5",
-    "tsc": "^1.20150623.0",
-    "typeorm": "^0.2.29"
+    "sequelize": "^6.17.0",
+    "tsc": "^ 2.0.4",
+    "typeorm": "^0.3.4"
   }
 }
