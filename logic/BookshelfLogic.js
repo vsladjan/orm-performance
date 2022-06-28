@@ -4,9 +4,9 @@ var Club = dbBookshelf.Club;
 var Equipment = dbBookshelf.Equipment;
 
 
-var getSelect = async function(req, res){
+var select = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     /* Club basic select */
@@ -14,14 +14,14 @@ var getSelect = async function(req, res){
     data = await Club.fetchAll();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.ClubTime = sec + "s";
+    jsonObj.ClubTime = sec;
 
     /* Player basic select */
     start = process.hrtime();
     data = await Player.fetchAll();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerTime = sec + "s";
+    jsonObj.PlayerTime = sec;
 
 
     /* Equipment basic select */
@@ -29,44 +29,35 @@ var getSelect = async function(req, res){
     data = await Equipment.fetchAll();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.EquipmentTime = sec + "s";
+    jsonObj.EquipmentTime = sec;
 
-    /* Response */
-    console.log("Bookshelf Club select time: " + jsonObj.ClubTime);
-    console.log("Bookshelf Player select time: " + jsonObj.PlayerTime);
-    console.log("Bookshelf Equipment select time: " + jsonObj.EquipmentTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectWithJoin = async function(req, res){
+var selectWithJoin = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     start = process.hrtime();
     await Player.fetchAll({withRelated:['club']});
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerClubTime = sec + "s";
+    jsonObj.PlayerClubTime = sec;
 
     start = process.hrtime();
     data = await Player.fetchAll({withRelated:['equipments']});
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentTime = sec + "s";
+    jsonObj.PlayerEquipmentTime = sec;
 
-     /* Response */
-    console.log("Bookshelf Player select time: " + jsonObj.PlayerClubTime);
-    console.log("Bookshelf Player and Equipment select time: " + jsonObj.PlayerEquipmentTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
 
+    return jsonObj;
 }
 
-var getSelectColumn = async function(req, res){
+var selectColumn = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
 
@@ -80,19 +71,14 @@ var getSelectColumn = async function(req, res){
     });
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentColumnTime = sec + "s";
+    jsonObj.PlayerEquipmentColumnTime = sec;
 
-
-     /* Response */
-     console.log("Bookshelf Player and Equipment select specific column time: " + jsonObj.PlayerEquipmentColumnTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectWhere = async function(req, res){
-    let paramId = req.params.id;
+var selectWhere = async function(paramId){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
 
@@ -100,18 +86,15 @@ var getSelectWhere = async function(req, res){
     data = await Player.where('player.id', paramId).fetchAll({withRelated:['equipments']});
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+    jsonObj.PlayerEquipmentWhereTime = sec;
 
-     /* Response */
-    console.log("Bookshelf Player and Equipment where select time: " + jsonObj.PlayerEquipmentWhereTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getProcedure = async function(req, res){
+var procedure = async function(){
     let paramId = req.params.id;
     let jsonObj = {};
-    let jsonStr, data;
+    let  data;
     let start, elapsed, sec;
 
 
@@ -120,18 +103,14 @@ var getProcedure = async function(req, res){
     data = await knex.raw("call proc(1);");
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+    jsonObj.PlayerEquipmentWhereTime = sec;
 
-
-     /* Response */
-    console.log("Bookshelf Player and Equipment where select time: " + jsonObj.PlayerEquipmentWhereTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
 
-module.exports.getSelect = getSelect;
-module.exports.getSelectWithJoin = getSelectWithJoin;
-module.exports.getSelectColumn = getSelectColumn;
-module.exports.getSelectWhere = getSelectWhere;
-module.exports.getProcedure = getProcedure;
+module.exports.select = select;
+module.exports.selectWithJoin = selectWithJoin;
+module.exports.selectColumn = selectColumn;
+module.exports.selectWhere = selectWhere;
+module.exports.procedure = procedure;

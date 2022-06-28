@@ -9,6 +9,6 @@ module.exports = {
     "database": "orm",
     "synchronize": true,
     "entities": [
-       "models/typeorm/entities/**/*.js"
+        "models/typeorm/entities/**/*.js"
     ]
 }

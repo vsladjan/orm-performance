@@ -1,13 +1,13 @@
-var mikroDI = require("../mikroormdb.js").DI;
+var mikroDI = require("../mikroormdb.js").getConnection();
 var Player = require('../models/mikroorm/entities/Player.js').Player;
 var Club = require('../models/mikroorm/entities/Club.js').Club;
 var Equipment = require('../models/mikroorm/entities/Equipment.js').Equipment;
 var PlayerEquipment = require('../models/mikroorm/entities/PlayerEquipment').Playerequipment;
 
 
-var getSelect = async function(req, res){
+var select = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
     let rep;
 
@@ -17,7 +17,7 @@ var getSelect = async function(req, res){
     data = await rep.findAll();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.ClubTime = sec + "s";
+    jsonObj.ClubTime = sec;
     console.log(data);
 
     /* Player basic select */
@@ -26,7 +26,7 @@ var getSelect = async function(req, res){
     data = await rep.findAll();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerTime = sec + "s";
+    jsonObj.PlayerTime = sec;
     console.log(data);
 
 
@@ -36,20 +36,15 @@ var getSelect = async function(req, res){
     data = await rep.findAll();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.EquipmentTime = sec + "s";
+    jsonObj.EquipmentTime = sec;
     console.log(data);
 
-    /* Response */
-    console.log("MikroORM Club select time: " + jsonObj.ClubTime);
-    console.log("MikroORM Player select time: " + jsonObj.PlayerTime);
-    console.log("MikroORM Equipment select time: " + jsonObj.EquipmentTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectWithJoin = async function(req, res){
+var selectWithJoin = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
     let rep;
 
@@ -59,7 +54,7 @@ var getSelectWithJoin = async function(req, res){
     data = await rep.findAll(['clubId']);
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerClubTime = sec + "s";
+    jsonObj.PlayerClubTime = sec;
 
     // Player with equipment select
     start = process.hrtime();
@@ -67,58 +62,47 @@ var getSelectWithJoin = async function(req, res){
     data = await rep.findAll(['equipments']);
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentTime = sec + "s";
+    jsonObj.PlayerEquipmentTime = sec;
 
-    console.log(data[0].equipments);
-    // Response
-    console.log("MikroORM Player Equipment select time: " + jsonObj.PlayerEquipmentTime);
-    console.log("MikroORM Player Club select time: " + jsonObj.PlayerClubTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectColumn = async function(req, res){
+var selectColumn = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     // Player with equipment select
     start = process.hrtime();
-    data = await mikroDI.em.createQueryBuilder(Player, 'p')
+    data = await mikroDI.em.fork().createQueryBuilder(Player, 'p')
                                 .select(['p.id as playerId', 'p.name as playerName', 'e.name as equipmentName'])
                                 .leftJoin('equipments', 'e').execute();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentColumnTime = sec + "s";
+    jsonObj.PlayerEquipmentColumnTime = sec;
 
-    // Response
-    console.log("MikroORM Player Equipment select specific column time: " + jsonObj.PlayerEquipmentColumnTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+
+    return jsonObj;
 }
 
-var getSelectWhere = async function(req, res){
-    let paramId = req.params.id;
+var selectWhere = async function(paramId){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
     let rep;
 
     // Player with equipment select
     start = process.hrtime();
     rep = mikroDI.em.fork().getRepository(Player);
-    data = await rep.findAll(paramId, ['equipments']);
+    data = await rep.findAll({ id: paramId }, ['equipments']);
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+    jsonObj.PlayerEquipmentWhereTime = sec;
 
-    // Response
-    console.log("MikroORM Player Equipment select where time: " + jsonObj.PlayerEquipmentWhereTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getProcedure = async function(req, res){
+var procedure = async function(){
     let jsonStr, jsonObj = {};
     let start, elapsed, sec;
 
@@ -129,15 +113,14 @@ var getProcedure = async function(req, res){
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;
-    jsonObj.ProcedureTime = sec + "s";
+    jsonObj.ProcedureTime = sec;
 
-    console.log("Objection procedure" + jsonObj.ProcedureTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-module.exports.getSelect = getSelect;
-module.exports.getSelectWithJoin = getSelectWithJoin;
-module.exports.getSelectColumn = getSelectColumn;
-module.exports.getSelectWhere = getSelectWhere;
-module.exports.getProcedure = getProcedure;
+
+module.exports.select = select;
+module.exports.selectWithJoin = selectWithJoin;
+module.exports.selectColumn = selectColumn;
+module.exports.selectWhere = selectWhere;
+module.exports.procedure = procedure;

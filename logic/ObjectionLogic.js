@@ -3,9 +3,9 @@ var Player = require("../models/objection/player.js").Player;
 var Equipment = require("../models/objection/equipment.js").Equipment;
 
 
-var getSelect = async function(req, res){
+var select = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     // Club basic select
@@ -13,14 +13,14 @@ var getSelect = async function(req, res){
     data = await Club.query();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.ClubTime = sec + "s";
+    jsonObj.ClubTime = sec;
 
     // Player basic select
     start = process.hrtime();
     data = await Player.query();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerTime = sec + "s";
+    jsonObj.PlayerTime = sec;
 
 
     // Equipment basic select
@@ -28,19 +28,14 @@ var getSelect = async function(req, res){
     data = await Equipment.query();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.EquipmentTime = sec + "s";
+    jsonObj.EquipmentTime = sec;
 
-    // Response
-    console.log("Objection Club select time: " + jsonObj.ClubTime);
-    console.log("Objection Player select time: " + jsonObj.PlayerTime);
-    console.log("Objection Equipment select time: " + jsonObj.EquipmentTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectWithJoin = async function(req, res){
+var selectWithJoin = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     // Player with equipment select
@@ -48,26 +43,21 @@ var getSelectWithJoin = async function(req, res){
     data = await Player.query().withGraphJoined('equipments');
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentTime = sec + "s";
+    jsonObj.PlayerEquipmentTime = sec;
 
     // Player with club select
     start = process.hrtime();
     data = await Player.query().withGraphJoined('club');
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerClubTime = sec + "s";
+    jsonObj.PlayerClubTime = sec;
 
-    // Response
-    console.log("Objection Player Equipment select time: " + jsonObj.PlayerEquipmentTime);
-    console.log("Objection Player Club select time: " + jsonObj.PlayerClubTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectColumn = async function(req, res){
-    let paramId = req.params.id;
+var selectColumn = async function(){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     // Player with equipment select
@@ -79,18 +69,14 @@ var getSelectColumn = async function(req, res){
                                                             );
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentColumnTime = sec + "s";
+    jsonObj.PlayerEquipmentColumnTime = sec;
 
-    // Response
-    console.log("Objection Player Equipment select specific column time: " + jsonObj.PlayerEquipmentColumnTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getSelectWhere = async function(req, res){
-    let paramId = req.params.id;
+var selectWhere = async function(paramId){
     let jsonObj = {};
-    let jsonStr, data;
+    let data;
     let start, elapsed, sec;
 
     // Player with equipment select
@@ -98,16 +84,13 @@ var getSelectWhere = async function(req, res){
     data = await Player.query().withGraphJoined('equipments').where('player.id', paramId);
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentWhereTime = sec + "s";
+    jsonObj.PlayerEquipmentWhereTime = sec;
 
-    // Response
-    console.log("Objection Player Equipment select where time: " + jsonObj.PlayerEquipmentWhereTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
-var getProcedure = async function(req, res){
-    let jsonStr, jsonObj = {};
+var procedure = async function(){
+    let jsonObj = {};
     let start, elapsed, sec;
 
     // Procedure
@@ -117,16 +100,14 @@ var getProcedure = async function(req, res){
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;
-    jsonObj.ProcedureTime = sec + "s";
+    jsonObj.ProcedureTime = sec;
 
-    console.log("Objection procedure" + jsonObj.ProcedureTime);
-    jsonStr = JSON.stringify(jsonObj);
-    res.send(jsonStr);
+    return jsonObj;
 }
 
 
-module.exports.getSelect = getSelect;
-module.exports.getSelectWithJoin = getSelectWithJoin;
-module.exports.getSelectColumn = getSelectColumn;
-module.exports.getSelectWhere = getSelectWhere;
-module.exports.getProcedure = getProcedure;
+module.exports.select = select;
+module.exports.selectWithJoin = selectWithJoin;
+module.exports.selectColumn = selectColumn;
+module.exports.selectWhere = selectWhere;
+module.exports.procedure = procedure;
