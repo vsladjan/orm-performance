@@ -46,12 +46,6 @@ var selectWithJoin = async function(){
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerClubTime = sec;
 
-    // Club basic select 
-    start = process.hrtime();
-    let data = await sequelize.query("SELECT * FROM player as p INNER JOIN club as c on p.clubId=c.id;", { type: sequelize.QueryTypes.SELECT});
-    elapsed = process.hrtime(start);
-    sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerClubTimeRaw = sec;
 
 
     // Player select join with equipment
@@ -62,13 +56,6 @@ var selectWithJoin = async function(){
     sec = elapsed[0] + msec;
     jsonObj.PlayerEquipmentTime = sec;
 
-    /* Club basic select */
-    start = process.hrtime();
-    data = await sequelize.query("SELECT * FROM player as p INNER JOIN playerequipment as pc on p.id=pc.playerId INNER JOIN equipment e ON pc.equipmentId=e.id;",
-                                 { type: sequelize.QueryTypes.SELECT} );
-    elapsed = process.hrtime(start);
-    sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentTimeRaw = sec;
 
     return jsonObj;
 }

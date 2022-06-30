@@ -15,27 +15,27 @@ const Player_1 = require("./Player");
 let Club = class Club {
 };
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn({ type: "int", name: "id" }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: "int", name: "id" }),
     __metadata("design:type", Number)
 ], Club.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "name", length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "name", length: 255 }),
     __metadata("design:type", String)
 ], Club.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "location", nullable: true, length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "location", nullable: true, length: 255 }),
     __metadata("design:type", String)
 ], Club.prototype, "location", void 0);
 __decorate([
-    typeorm_1.Column("int", { name: "created", nullable: true }),
+    (0, typeorm_1.Column)("int", { name: "created", nullable: true }),
     __metadata("design:type", Number)
 ], Club.prototype, "created", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => Player_1.Player, (player) => player.club),
+    (0, typeorm_1.OneToMany)(() => Player_1.Player, (player) => player.club),
     __metadata("design:type", Array)
 ], Club.prototype, "players", void 0);
 Club = __decorate([
-    typeorm_1.Entity("club", { schema: "orm" })
+    (0, typeorm_1.Entity)("club", { schema: "orm" })
 ], Club);
 exports.Club = Club;
 //# sourceMappingURL=Club.js.map

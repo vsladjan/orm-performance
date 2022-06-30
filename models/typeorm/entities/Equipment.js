@@ -15,27 +15,27 @@ const Player_1 = require("./Player");
 let Equipment = class Equipment {
 };
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn({ type: "int", name: "id" }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: "int", name: "id" }),
     __metadata("design:type", Number)
 ], Equipment.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "name", length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "name", length: 255 }),
     __metadata("design:type", String)
 ], Equipment.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "description", nullable: true, length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "description", nullable: true, length: 255 }),
     __metadata("design:type", String)
 ], Equipment.prototype, "description", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "color", nullable: true, length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "color", nullable: true, length: 255 }),
     __metadata("design:type", String)
 ], Equipment.prototype, "color", void 0);
 __decorate([
-    typeorm_1.ManyToMany(() => Player_1.Player, (player) => player.equipment),
+    (0, typeorm_1.ManyToMany)(() => Player_1.Player, (player) => player.equipment),
     __metadata("design:type", Array)
 ], Equipment.prototype, "players", void 0);
 Equipment = __decorate([
-    typeorm_1.Entity("equipment", { schema: "orm" })
+    (0, typeorm_1.Entity)("equipment", { schema: "orm" })
 ], Equipment);
 exports.Equipment = Equipment;
 //# sourceMappingURL=Equipment.js.map

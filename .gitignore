@@ -49,4 +49,5 @@ Thumbs.db
 *.wmv
 
 config.json
-output/
+output/*.txt
+database/*.bak

@@ -16,36 +16,36 @@ const Equipment_1 = require("./Equipment");
 let Player = class Player {
 };
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn({ type: "int", name: "id" }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: "int", name: "id" }),
     __metadata("design:type", Number)
 ], Player.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "name", length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "name", length: 255 }),
     __metadata("design:type", String)
 ], Player.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column("varchar", { name: "lastname", nullable: true, length: 255 }),
+    (0, typeorm_1.Column)("varchar", { name: "lastname", nullable: true, length: 255 }),
     __metadata("design:type", String)
 ], Player.prototype, "lastname", void 0);
 __decorate([
-    typeorm_1.Column("int", { name: "age", nullable: true }),
+    (0, typeorm_1.Column)("int", { name: "age", nullable: true }),
     __metadata("design:type", Number)
 ], Player.prototype, "age", void 0);
 __decorate([
-    typeorm_1.Column("int", { name: "clubId", nullable: true }),
+    (0, typeorm_1.Column)("int", { name: "clubId", nullable: true }),
     __metadata("design:type", Number)
 ], Player.prototype, "clubId", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => Club_1.Club, (club) => club.players, {
+    (0, typeorm_1.ManyToOne)(() => Club_1.Club, (club) => club.players, {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     }),
-    typeorm_1.JoinColumn([{ name: "clubId", referencedColumnName: "id" }]),
+    (0, typeorm_1.JoinColumn)([{ name: "clubId", referencedColumnName: "id" }]),
     __metadata("design:type", Club_1.Club)
 ], Player.prototype, "club", void 0);
 __decorate([
-    typeorm_1.ManyToMany(() => Equipment_1.Equipment, (equipment) => equipment.players),
-    typeorm_1.JoinTable({
+    (0, typeorm_1.ManyToMany)(() => Equipment_1.Equipment, (equipment) => equipment.players),
+    (0, typeorm_1.JoinTable)({
         name: "playerequipment",
         joinColumns: [{ name: "playerId", referencedColumnName: "id" }],
         inverseJoinColumns: [{ name: "equipmentId", referencedColumnName: "id" }],
@@ -54,8 +54,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Player.prototype, "equipment", void 0);
 Player = __decorate([
-    typeorm_1.Index("clubId", ["clubId"], {}),
-    typeorm_1.Entity("player", { schema: "orm" })
+    (0, typeorm_1.Index)("clubId", ["clubId"], {}),
+    (0, typeorm_1.Entity)("player", { schema: "orm" })
 ], Player);
 exports.Player = Player;
 //# sourceMappingURL=Player.js.map

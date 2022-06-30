@@ -14,23 +14,23 @@ const core_1 = require("@mikro-orm/core");
 let Club = class Club {
 };
 __decorate([
-    core_1.PrimaryKey(),
+    (0, core_1.PrimaryKey)(),
     __metadata("design:type", Number)
 ], Club.prototype, "id", void 0);
 __decorate([
-    core_1.Property({ length: 255 }),
+    (0, core_1.Property)({ length: 255 }),
     __metadata("design:type", String)
 ], Club.prototype, "name", void 0);
 __decorate([
-    core_1.Property({ length: 255, nullable: true }),
+    (0, core_1.Property)({ length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Club.prototype, "location", void 0);
 __decorate([
-    core_1.Property({ nullable: true }),
+    (0, core_1.Property)({ nullable: true }),
     __metadata("design:type", Number)
 ], Club.prototype, "created", void 0);
 Club = __decorate([
-    core_1.Entity()
+    (0, core_1.Entity)()
 ], Club);
 exports.Club = Club;
 //# sourceMappingURL=Club.js.map

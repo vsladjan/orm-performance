@@ -19,31 +19,31 @@ let Player = class Player {
     }
 };
 __decorate([
-    core_1.PrimaryKey(),
+    (0, core_1.PrimaryKey)(),
     __metadata("design:type", Number)
 ], Player.prototype, "id", void 0);
 __decorate([
-    core_1.Property({ length: 255 }),
+    (0, core_1.Property)({ length: 255 }),
     __metadata("design:type", String)
 ], Player.prototype, "name", void 0);
 __decorate([
-    core_1.Property({ length: 255, nullable: true }),
+    (0, core_1.Property)({ length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Player.prototype, "lastname", void 0);
 __decorate([
-    core_1.Property({ nullable: true }),
+    (0, core_1.Property)({ nullable: true }),
     __metadata("design:type", Number)
 ], Player.prototype, "age", void 0);
 __decorate([
-    core_1.ManyToOne({ entity: () => Club_1.Club, fieldName: 'clubId', cascade: [core_1.Cascade.MERGE], nullable: true, index: 'clubId' }),
+    (0, core_1.ManyToOne)({ entity: () => Club_1.Club, fieldName: 'clubId', cascade: [core_1.Cascade.MERGE], nullable: true, index: 'clubId' }),
     __metadata("design:type", Club_1.Club)
 ], Player.prototype, "clubId", void 0);
 __decorate([
-    core_1.ManyToMany({ entity: () => Equipment_1.Equipment, pivotTable: 'PlayerEquipment', joinColumn: 'playerId', inverseJoinColumn: 'equipmentId' }),
+    (0, core_1.ManyToMany)({ entity: () => Equipment_1.Equipment, pivotTable: 'PlayerEquipment', joinColumn: 'playerId', inverseJoinColumn: 'equipmentId' }),
     __metadata("design:type", Object)
 ], Player.prototype, "equipments", void 0);
 Player = __decorate([
-    core_1.Entity()
+    (0, core_1.Entity)()
 ], Player);
 exports.Player = Player;
 //# sourceMappingURL=Player.js.map

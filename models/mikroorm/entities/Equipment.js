@@ -18,27 +18,27 @@ let Equipment = class Equipment {
     }
 };
 __decorate([
-    core_1.PrimaryKey(),
+    (0, core_1.PrimaryKey)(),
     __metadata("design:type", Number)
 ], Equipment.prototype, "id", void 0);
 __decorate([
-    core_1.Property({ length: 255 }),
+    (0, core_1.Property)({ length: 255 }),
     __metadata("design:type", String)
 ], Equipment.prototype, "name", void 0);
 __decorate([
-    core_1.Property({ length: 255, nullable: true }),
+    (0, core_1.Property)({ length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Equipment.prototype, "description", void 0);
 __decorate([
-    core_1.Property({ length: 255, nullable: true }),
+    (0, core_1.Property)({ length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Equipment.prototype, "color", void 0);
 __decorate([
-    core_1.ManyToMany(() => Player_1.Player, player => player.equipments),
+    (0, core_1.ManyToMany)(() => Player_1.Player, player => player.equipments),
     __metadata("design:type", Object)
 ], Equipment.prototype, "players", void 0);
 Equipment = __decorate([
-    core_1.Entity()
+    (0, core_1.Entity)()
 ], Equipment);
 exports.Equipment = Equipment;
 //# sourceMappingURL=Equipment.js.map

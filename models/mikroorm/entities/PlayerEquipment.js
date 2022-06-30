@@ -16,15 +16,15 @@ const Player_1 = require("./Player");
 let Playerequipment = class Playerequipment {
 };
 __decorate([
-    core_1.ManyToOne({ entity: () => Player_1.Player, fieldName: 'playerId', cascade: [core_1.Cascade.MERGE], primary: true }),
+    (0, core_1.ManyToOne)({ entity: () => Player_1.Player, fieldName: 'playerId', cascade: [core_1.Cascade.MERGE], primary: true }),
     __metadata("design:type", Player_1.Player)
 ], Playerequipment.prototype, "playerId", void 0);
 __decorate([
-    core_1.ManyToOne({ entity: () => Equipment_1.Equipment, fieldName: 'equipmentId', cascade: [core_1.Cascade.MERGE], primary: true, index: 'equipmentId' }),
+    (0, core_1.ManyToOne)({ entity: () => Equipment_1.Equipment, fieldName: 'equipmentId', cascade: [core_1.Cascade.MERGE], primary: true, index: 'equipmentId' }),
     __metadata("design:type", Equipment_1.Equipment)
 ], Playerequipment.prototype, "equipmentId", void 0);
 Playerequipment = __decorate([
-    core_1.Entity()
+    (0, core_1.Entity)()
 ], Playerequipment);
 exports.Playerequipment = Playerequipment;
 //# sourceMappingURL=PlayerEquipment.js.map

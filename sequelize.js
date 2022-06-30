@@ -4,7 +4,8 @@ const config = require("./config.json");
 const sequelize = new Sequelize('orm', config.db_username, config.db_password, {
     host: 'localhost',
     dialect: 'mysql',
-    operatorsAliases: false,
+    logging: false,
+    operatorsAliases: 0,
     define:{
         freezeTableName: true,
         timestamps: false
