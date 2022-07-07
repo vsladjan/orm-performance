@@ -49,3 +49,6 @@ Thumbs.db
 *.wmv
 
 config.json
+output/*.txt
+database/*.bak
+.vscode/*
