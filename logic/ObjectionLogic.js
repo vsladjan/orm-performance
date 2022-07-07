@@ -38,6 +38,13 @@ var selectWithJoin = async function(){
     let data;
     let start, elapsed, sec;
 
+    // Player with club select
+    start = process.hrtime();
+    data = await Player.query().withGraphJoined('club');
+    elapsed = process.hrtime(start);
+    sec = elapsed[0] + elapsed[1] / 1000000000;
+    jsonObj.PlayerClubTime = sec;
+
     // Player with equipment select
     start = process.hrtime();
     data = await Player.query().withGraphJoined('equipments');
@@ -45,12 +52,6 @@ var selectWithJoin = async function(){
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerEquipmentTime = sec;
 
-    // Player with club select
-    start = process.hrtime();
-    data = await Player.query().withGraphJoined('club');
-    elapsed = process.hrtime(start);
-    sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerClubTime = sec;
 
     return jsonObj;
 }
@@ -89,14 +90,15 @@ var selectWhere = async function(paramId){
     return jsonObj;
 }
 
-var procedure = async function(){
+var procedure = async function(pararmValue){
     let jsonObj = {};
     let start, elapsed, sec;
 
     // Procedure
     start = process.hrtime();
     const knex = Player.knex();
-    let data = await knex.raw("call proc(1);");
+    let data = await knex.raw("call procedure_orm(?);",
+                            [pararmValue]);
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;

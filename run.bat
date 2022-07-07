@@ -1,6 +1,6 @@
 @ECHO OFF
 
-FOR /L %%i IN (0,1,30) DO (
+FOR /L %%i IN (0,1,10) DO (
     ECHO %%i% Iteration
     node app.js sequelize
     node app.js knex
@@ -9,3 +9,5 @@ FOR /L %%i IN (0,1,30) DO (
     node app.js typeorm
     node app.js mikroorm
 )
+
+node app.js results

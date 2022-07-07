@@ -103,14 +103,15 @@ var selectWhere = async function(paramId){
     return jsonObj;
 }
 
-var procedure = async function(){
+var procedure = async function(paramValue){
     let dataSource = await require("../typeormdb.js").getConnection();
     let jsonObj = {};
     let start, elapsed, sec;
 
     // Player select with club
     start = process.hrtime();
-    let result = await dataSource.manager.manager.query("call proc(1);")
+    let result = await dataSource.manager.query("call procedure_orm(?);",
+                                                [paramValue]);
             
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;

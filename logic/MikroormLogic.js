@@ -18,7 +18,6 @@ var select = async function(){
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.ClubTime = sec;
-    console.log(data);
 
     /* Player basic select */
     start = process.hrtime();
@@ -27,7 +26,6 @@ var select = async function(){
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerTime = sec;
-    console.log(data);
 
 
     /* Equipment basic select */
@@ -37,7 +35,6 @@ var select = async function(){
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.EquipmentTime = sec;
-    console.log(data);
 
     return jsonObj;
 }
@@ -102,14 +99,15 @@ var selectWhere = async function(paramId){
     return jsonObj;
 }
 
-var procedure = async function(){
-    let jsonStr, jsonObj = {};
+var procedure = async function(paramValue){
+    let jsonObj = {};
     let start, elapsed, sec;
 
     // Procedure
     start = process.hrtime();
     let knex = mikroDI.em.getConnection().getKnex();
-    let data = await knex.raw("call proc(1);");
+    let data = await knex.raw("call procedure_orm(?);",
+                            [paramValue]);
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;

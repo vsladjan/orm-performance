@@ -91,8 +91,7 @@ var selectWhere = async function(paramId){
     return jsonObj;
 }
 
-var procedure = async function(){
-    let paramId = req.params.id;
+var procedure = async function(paramValue){
     let jsonObj = {};
     let  data;
     let start, elapsed, sec;
@@ -100,7 +99,8 @@ var procedure = async function(){
 
     start = process.hrtime();
     let knex = dbBookshelf.db.knex;
-    data = await knex.raw("call proc(1);");
+    data = await knex.raw("call procedure_orm(?);",
+                            [paramValue]);
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerEquipmentWhereTime = sec;

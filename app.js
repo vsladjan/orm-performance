@@ -1,7 +1,22 @@
-if (process.argv.length != 3){
-    console.log("Wrong number of arguments");
+if (process.argv.length != 3 && process.argv.length != 4 && process.argv.length != 5){
+    console.log("\nWrong number of parameters\n");
+    console.log("RUN: node app.js command param1 param2 \n");
+    console.log(" command: [sequelize, bookshelf, knex, objection, typeorm, mikroorm]");
+    console.log(" param1: NUMBER param for where query (if not passed it will be used default hardcoded value)");
+    console.log(" param2: STRING param for procedure query (if not passed it will be used default hardcoded value)\n");
 }else {
+    let param1 = 2;
+    let param2 = "player_name_1";
+    if (process.argv.length == 4){
+        param1 = process.argv[3];
+    }
+    if (process.argv.length == 5){
+        param1 = process.argv[3];
+        param2 = process.argv[4];
+    }
     let command = process.argv[2];
+    console.log("Command: " + command + " param1: " + param1 + " param2: " + param2);
+
     let helper = require("./logic/helper.js");
     (async function(){
         if (command == 'sequelize' || command == 'bookshelf' || command == 'knex' || 
@@ -57,11 +72,13 @@ if (process.argv.length != 3){
             let selectTime = await logic.select();
             let selectWithJoinTime = await logic.selectWithJoin();
             let selectColumnTime = await logic.selectColumn();
-            let selectWhereTime = await logic.selectWhere(2);
+            let selectWhereTime = await logic.selectWhere(param1);
+            let procTime = await logic.procedure(param2);
             times.push(selectTime);
             times.push(selectWithJoinTime);
             times.push(selectColumnTime);
             times.push(selectWhereTime);
+            times.push(procTime);
         
             helper.writeFile(times, logFile, fullLogFile);
             process.exit();

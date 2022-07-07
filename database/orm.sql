@@ -96,6 +96,14 @@ SET @number_of_clubs = 10000;
 SET @number_of_players = 100000;
 SET @number_of_equipments = 10000;
 
+
+DELIMITER $$
+CREATE PROCEDURE procedure_orm(parameter varchar(64))
+begin
+	select * from player where name=parameter;
+end$$
+DELIMITER ;
+
 DELIMITER $$
 CREATE PROCEDURE generate_data_club()
 BEGIN

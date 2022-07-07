@@ -94,13 +94,14 @@ var selectWhere = async function(paramId){
     return jsonObj;
 }
 
-var procedure = async function(){
+var procedure = async function(paramValue){
     let  jsonObj = {};
     let start, elapsed, sec;
 
     // Player select join with equipment
     start = process.hrtime();
-    let data = await knex.raw("call proc(1);");
+    let data = await knex.raw("call procedure_orm(?);",
+                            [paramValue]);
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;

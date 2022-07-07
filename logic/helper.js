@@ -7,12 +7,12 @@ var writeFile = function(times, logFile, fullLogFile){
     times.forEach(function(time){
         for (const key in time){
             strTxt += key.padEnd(30) + "\t\t" + time[key] + "\n";
-            strHeader += key.padEnd(30);
         } 
     });
     times.forEach(function(time){
         for (const key in time){
             strData += JSON.stringify(time[key]).padEnd(30);
+            strHeader += key.padEnd(30);
         } 
     });
 
@@ -32,10 +32,10 @@ var writeFile = function(times, logFile, fullLogFile){
 
 var resultFile = async function(orms, fileNameDir, fileName){
     let header = "";
-    let objData = [0, 0, 0, 0, 0, 0, 0];
     let ormNumber = 0;
 
     for (let k=0; k<orms.length; k++){
+        let objData = [0, 0, 0, 0, 0, 0, 0, 0];
         let orm = orms[k];
         const allFileContents = fs.readFileSync(fileNameDir + orm + fileName, 'utf-8');
         

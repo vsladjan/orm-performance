@@ -104,14 +104,15 @@ var selectWhere = async function(paramId){
     return jsonObj;
 }
 
-var procedure = async function(){
+var procedure = async function(paramValue){
     await sequelize.sync();
     let jsonStr, jsonObj = {};
     let start, elapsed, sec;
 
     // Player select join with equipment
     start = process.hrtime();
-    let data = await sequelize.query("call proc(1);");
+    let data = await sequelize.query("call procedure_orm(:name);",
+                                     {replacements: {name: paramValue}});
     elapsed = process.hrtime(start);
     msec = elapsed[1] / 1000000000;
     sec = elapsed[0] + msec;
