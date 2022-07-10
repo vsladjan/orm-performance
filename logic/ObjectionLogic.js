@@ -63,11 +63,11 @@ var selectColumn = async function(){
 
     // Player with equipment select
     start = process.hrtime();
-    data = await Player.query().innerJoin('equipment', 'player.id', 'equipment.id').select(
-                                                                    'player.id as playerId', 
-                                                                    'player.name as playerName', 
-                                                                    'equipment.name as equipmentName'
-                                                            );
+    data = await Player.query().innerJoin('playerequipment', 'player.id', 'playerequipment.playerId')
+                                .innerJoin('equipment', 'playerequipment.equipmentId', 'equipment.id').select('player.id as playerId', 
+                                                    'player.name as playerName', 
+                                                    'equipment.name as equipmentName'
+                                                    );
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerEquipmentColumnTime = sec;

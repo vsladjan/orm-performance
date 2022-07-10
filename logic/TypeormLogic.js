@@ -92,13 +92,13 @@ var selectWhere = async function(paramId){
     // Player select with club
     start = process.hrtime();
     rep = dataSource.manager.getRepository(Player);
-    const query = await  dataSource.manager.getRepository(Player)
-                                .createQueryBuilder('p')
-                                .innerJoinAndSelect('p.equipment', 'e')
-                                .select(['p.id', 'p.name', 'e.name']).where('p.id', paramId).execute();          
+    data = await rep.findOne({
+        where: { id: paramId },
+        relations: ["equipment"] }
+    );          
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
-    jsonObj.PlayerEquipmentColumnTime = sec;
+    jsonObj.PlayerEquipmentWhereTime = sec;
 
     return jsonObj;
 }

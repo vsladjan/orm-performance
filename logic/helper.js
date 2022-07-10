@@ -37,7 +37,13 @@ var resultFile = async function(orms, fileNameDir, fileName){
     for (let k=0; k<orms.length; k++){
         let objData = [0, 0, 0, 0, 0, 0, 0, 0];
         let orm = orms[k];
-        const allFileContents = fs.readFileSync(fileNameDir + orm + fileName, 'utf-8');
+        let allFileContents = "";
+        try{
+            allFileContents = fs.readFileSync(fileNameDir + orm + fileName, 'utf-8');
+        }
+        catch(e){
+            console.log("Problem with opening file " + fileNameDir + orm + fileName);
+        }
         
         let i = 0;
         allFileContents.split(/\r?\n/).forEach(line =>  {
@@ -67,8 +73,9 @@ var resultFile = async function(orms, fileNameDir, fileName){
         }
         fs.appendFileSync(fileNameDir + "results.txt", "\n");
         ormNumber++;
-
+        
     }
+    console.log("Results file generated");
     
 }
 

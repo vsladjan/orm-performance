@@ -47,16 +47,18 @@ var selectWithJoin = async function(){
 
     // Player with club select
     start = process.hrtime();
-    rep = mikroDI.em.fork().getRepository(Player);
-    data = await rep.findAll(['clubId']);
+    await mikroDI.em.fork().createQueryBuilder(Player, 'p')
+                                .select('*')
+                                .leftJoin('clubId', 'c').execute();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerClubTime = sec;
 
     // Player with equipment select
     start = process.hrtime();
-    rep = mikroDI.em.fork().getRepository(Player);
-    data = await rep.findAll(['equipments']);
+    await mikroDI.em.fork().createQueryBuilder(Player, 'p')
+                                .select('*')
+                                .leftJoin('equipments', 'e').execute();
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerEquipmentTime = sec;
@@ -91,7 +93,7 @@ var selectWhere = async function(paramId){
     // Player with equipment select
     start = process.hrtime();
     rep = mikroDI.em.fork().getRepository(Player);
-    data = await rep.findAll({ id: paramId }, ['equipments']);
+    data = await rep.find({ id: paramId }, { populate: ['equipments'] });
     elapsed = process.hrtime(start);
     sec = elapsed[0] + elapsed[1] / 1000000000;
     jsonObj.PlayerEquipmentWhereTime = sec;
