@@ -1,3 +1,14 @@
+SET @number_of_clubs = 10000;
+SET @number_of_players = 100000;
+SET @number_of_equipments = 10000;
+
+-- LARGE DATA UNCOMMENT IF NEEDED
+-- SET @number_of_clubs = 100000;
+-- SET @number_of_players = 1000000;
+-- SET @number_of_equipments = 100000;
+
+DROP DATABASE IF EXISTS `orm`;
+
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -92,9 +103,6 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-SET @number_of_clubs = 10000;
-SET @number_of_players = 100000;
-SET @number_of_equipments = 10000;
 
 
 DELIMITER $$

@@ -69,10 +69,15 @@ if (process.argv.length != 3 && process.argv.length != 4 && process.argv.length 
 
             console.log("Running queries for " + command);
             let times = [];
+            console.log("SELECT basic");
             let selectTime = await logic.select();
+            console.log("SELECT with JOIN");
             let selectWithJoinTime = await logic.selectWithJoin();
+            console.log("SELECT with COLUMN");
             let selectColumnTime = await logic.selectColumn();
+            console.log("SELECT with WHERE");
             let selectWhereTime = await logic.selectWhere(param1);
+            console.log("SELECT with PROC");
             let procTime = await logic.procedure(param2);
             times.push(selectTime);
             times.push(selectWithJoinTime);

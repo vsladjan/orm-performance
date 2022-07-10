@@ -65,7 +65,7 @@ var selectColumn = async function(){
     data = await Player.fetchAll({columns: ['id', 'name'],
         withRelated: [{
             'equipments': function(qb) {
-                qb.select('name'); //Table1Id is omitted!
+                qb.select('name');
             }
         }]
     });
