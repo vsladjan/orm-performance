@@ -2,6 +2,14 @@
 
 ## TL;DR USAGE
 
+Add config.json file in root of project with following data:
+```json
+{
+    "db_username": "user",
+    "db_password": "password"
+}
+```
+
 After running **orm.sql** script and **npm install** in project, run **run.bat** on windows to run all queries 10 times on all ORMs and collect data in results.txt file. If used big data run **run_large_data.bat** instead.
 For more detailed explaination check bellow.
 
