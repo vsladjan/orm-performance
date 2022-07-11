@@ -2,10 +2,12 @@
 
 ## TL;DR USAGE
 
-Add config.json file in root of project with following data:
+Add env variable **NODE_OPTIONS** with value: **--max_old_space_size=16384** to increase server memory if huge amount of data.
+
+Add **config.json** file in root of project with following data:
 ```json
 {
-    "db_username": "user",
+    "db_username": "ormuser",
     "db_password": "password"
 }
 ```

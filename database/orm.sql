@@ -136,7 +136,7 @@ BEGIN
       CONCAT('player_name_', i),
       CONCAT('player_lastname_', i),
       FLOOR( 1 + RAND( ) * 60 ),
-      FLOOR( 1 + RAND( ) * 10000 )
+      FLOOR( 1 + RAND( ) * @number_of_clubs )
     );
     SET i = i + 1;
   END WHILE;
@@ -181,3 +181,8 @@ CALL generate_data_club();
 CALL generate_data_player();
 CALL generate_data_equipment();
 CALL generate_data_playerequipment();
+
+DROP USER IF EXISTS 'ormuser'@'%';
+CREATE USER 'ormuser'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON orm.* TO 'ormuser'@'%' WITH GRANT OPTION;
+ALTER USER 'ormuser'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
