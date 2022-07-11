@@ -1,0 +1,8 @@
+ClubTime                      		0.1840463
+PlayerTime                    		1.2931917
+EquipmentTime                 		0.1263946
+PlayerClubTime                		0.2064083
+PlayerEquipmentTime           		1.0211919
+PlayerEquipmentColumnTime     		0.9279471
+PlayerEquipmentWhereTime      		0.014511
+ProcedureTime                 		0.0742843
